@@ -1,13 +1,19 @@
 import React from "react";
+import { useAppDispatch } from "../app/store";
+import { addItemToCartAction } from "../app/features/cart/cartSlice";
+import Button from "./ui/Button";
+import { IProduct } from "../interface";
 
 interface ProductCardProps {
-  id: number;
-  title: string;
-  thumbnail: string;
-  price: number;
+  product: IProduct,
 }
 
-const ProductCard: React.FC<ProductCardProps> = ({ id, title, thumbnail, price }) => {
+const ProductCard: React.FC<ProductCardProps> = ({product}) => {
+  const { id, title, thumbnail, price } = product;
+  const dispatch = useAppDispatch();
+  const addToCart = () => {
+    dispatch(addItemToCartAction(product));
+  };
   return (
     <div>
       <div className="relative flex w-full max-w-xs flex-col overflow-hidden rounded-lg border border-gray-100 bg-white shadow-md">
@@ -29,9 +35,9 @@ const ProductCard: React.FC<ProductCardProps> = ({ id, title, thumbnail, price }
               <span className="text-sm text-slate-900 line-through">$699</span>
             </p>
           </div>
-          <a
-            href="#"
+          <Button fullWidth
             className="flex items-center justify-center rounded-md bg-slate-900 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-blue-300"
+          onClick={addToCart}
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -48,7 +54,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ id, title, thumbnail, price }
               ></path>
             </svg>
             Add to cart
-          </a>
+          </Button>
         </div>
       </div>
     </div>
